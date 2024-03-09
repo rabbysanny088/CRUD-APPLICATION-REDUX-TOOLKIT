@@ -1,19 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
-// const preloadedState = localStorage.getItem('reduxState')
-//   ? JSON.parse(localStorage.getItem('reduxState'))
-//   : {};
-
 const initialState = {
   datas: [],
   isLoading: false,
   error: null,
 };
-
-
-
 
 export const FetchData = createAsyncThunk("datas/fetchdatas", async () => {
   const response = await axios.get(
@@ -36,7 +28,7 @@ export const updatedData = createAsyncThunk(
     try {
       const response = await axios.put(
         `https://jsonplaceholder.typicode.com/posts/${id}`,
-        {title, body, userId}
+        { title, body, userId }
       );
       return response.data;
     } catch (error) {
@@ -59,7 +51,7 @@ const DataSlice = createSlice({
     });
     builder.addCase(FetchData.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.datas = action.payload.slice(0, 50);
+      state.datas = action.payload;
       state.error = null;
     });
     builder.addCase(FetchData.rejected, (state, action) => {

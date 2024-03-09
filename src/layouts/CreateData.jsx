@@ -11,8 +11,6 @@ const CreateData = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
 
-
-  
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -21,7 +19,6 @@ const CreateData = () => {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
-    
   };
 
   const dispatch = useDispatch();
@@ -37,7 +34,7 @@ const CreateData = () => {
       setBody("");
       setIsModalOpen(false);
       setIsCreating(false);
-      message.success("Data successfully added")
+      message.success("Data successfully added");
     } catch (error) {
       console.log(error);
       setIsCreating(false);
@@ -45,7 +42,11 @@ const CreateData = () => {
   };
   return (
     <>
-      <Button type="primary" onClick={showModal}>
+      
+      <Button
+        className="bg-green-600 text-white hover:bg-gray-200"
+        onClick={showModal}
+      >
         Create Data
       </Button>
       <Modal
@@ -74,6 +75,7 @@ const CreateData = () => {
           <Form.Item
             label="userId"
             name="userId"
+            disabled
             rules={[
               {
                 required: true,
@@ -120,7 +122,11 @@ const CreateData = () => {
             />
           </Form.Item>
 
-          <Button type="primary" htmlType="submit" loading={isCreating}>
+          <Button
+            className="bg-orange-500"
+            htmlType="submit"
+            loading={isCreating}
+          >
             Create
           </Button>
         </Form>

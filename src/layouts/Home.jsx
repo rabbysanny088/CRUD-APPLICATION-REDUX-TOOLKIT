@@ -1,10 +1,12 @@
 import { Alert, Button, Input, Spin, Table, message } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { FetchData, deleteData } from "../features/Datas/DataSlice";
 import { setDeletingState } from "../features/Datas/DeleteSlice";
+import useAuthFirebase from "../hooks/useAuthFirebase";
+import Navbar from "../pages/Navbar";
 import CreateData from "./CreateData";
 import Edit from "./Edit";
 
@@ -14,7 +16,9 @@ const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [dataToEdit, setDataToEdit] = useState(null);
   const [search, setSearch] = useState("");
-  // const navigate = useNavigate();
+  const { isLoggedIn } = useAuthFirebase();
+
+  const navigate = useNavigate();
 
   const deleting = useSelector((state) => state.deleteReducer.deletingStates);
 
@@ -39,6 +43,12 @@ const Home = () => {
       dispatch(setDeletingState({ id, loading: false }));
     }
   };
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [isLoggedIn, navigate]);
 
   useEffect(() => {
     dispatch(FetchData());
@@ -95,7 +105,7 @@ const Home = () => {
   if (isLoading) {
     return (
       <Spin
-        size="small"
+        // size="small"
         style={{
           display: "flex",
           alignItems: "center",
@@ -153,14 +163,12 @@ const Home = () => {
             allowClear
             placeholder="Search according to title"
           />
-          <div>
-            <Button type="primary" danger>
-              <Link to="/secondpages?page=2">Go to rest data</Link>
-            </Button>
-          </div>
-        </div>
-        <div>
           <CreateData />
+        </div>
+        <div className="flex items-center">
+          <div>
+            <Navbar />
+          </div>
         </div>
       </div>
       <Table
